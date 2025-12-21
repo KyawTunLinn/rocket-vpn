@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Rocket Admin - Setup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0078D4;
+            --bg-color: #F3F2F1;
+            --card-bg: #FFFFFF;
+            --text-color: #201F1E;
+            --text-muted: #605E5C;
+            --border-color: #E1DFDD;
+            --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+            --radius: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #479EF5;
+                --bg-color: #202020;
+                --card-bg: #2B2B2B;
+                --text-color: #FFFFFF;
+                --text-muted: #A19F9D;
+                --border-color: #484644;
+                --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.4), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .setup-container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .setup-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .setup-header p {
+            color: var(--text-muted);
+            margin: 0 0 2rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            box-sizing: border-box;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .section-title {
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <img src="/images/logo.png" style="margin-bottom: 1rem;width: 100px;"></i>
+            <h1>Welcome to Rocket Admin</h1>
+            <p>Let's set up your VPN server.</p>
+        </div>
+
+        <form action="/setup" method="post">
+            <div class="section-title">Admin Account</div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="admin" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="section-title">VPN Configuration</div>
+            <div class="form-group">
+                <label for="endpointHost">Server Public IP / Domain</label>
+                <input type="text" id="endpointHost" name="endpointHost" class="form-control"
+                    placeholder="e.g. vpn.example.com or 1.2.3.4">
+                <small style="color: var(--text-muted);">Leave empty to auto-detect IP.</small>
+            </div>
+            <div class="form-group">
+                <label for="wgPort">WireGuard Port</label>
+                <input type="number" id="wgPort" name="wgPort" class="form-control" value="51820" required>
+            </div>
+            <div class="form-group">
+                <label for="clientSubnetPrefix">Private IP Subnet Prefix</label>
+                <input type="text" id="clientSubnetPrefix" name="clientSubnetPrefix" class="form-control"
+                    value="10.66.66" required>
+                <small style="color: var(--text-muted);">Clients will get IPs like 10.66.66.2</small>
+            </div>
+            <div class="form-group">
+                <label for="clientDns">Client DNS</label>
+                <input type="text" id="clientDns" name="clientDns" class="form-control" value="8.8.8.8" required>
+            </div>
+
+            <div class="section-title">First Profile</div>
+            <div class="form-group">
+                <label for="firstClientName">Profile Name</label>
+                <input type="text" id="firstClientName" name="firstClientName" class="form-control" value="My Phone"
+                    required>
+            </div>
+
+            <button type="submit" class="btn-primary">Complete Setup</button>
+        </form><br><br>
+        &copy; 2025 Rocket Admin. All rights reserved. v0.0.2 <br> Developed by <a href="https://github.com/KyawTunLinn"
+            style="text-decoration: none; color: var(--primary-color);">Kyaw Tun Linn</a>
+    </div>
+</body>
+
+</html>

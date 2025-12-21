@@ -18,6 +18,10 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
 ```bash
 sudo apt update && sudo apt upgrade -y && sudo apt-get install -y wireguard wireguard-tools iproute2 qrencode iptables curl openjdk-21-jdk -y
 
+Enabling IP Forwarding..."
+ Uncomment net.ipv4.ip_forward=1 in /etc/sysctl.conf if not already enabled
+sudo sysctl -p
+
 ./mvnw clean package -DskipTests
 ```
 
