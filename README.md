@@ -9,6 +9,23 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
 - **Monitoring**: View real-time connection status and data usage.
 - **Secure**: Admin login required.
 
+### Native Image Build Requirements
+- **CPU**: 4 cores (For Native Image Build, 2 cores is enough for standard JAR)
+- **RAM**: 8GB (For Native Image Build, 4GB is enough for standard JAR)
+- **Swap**: 8GB (For Native Image Build)
+
+### Why Native Image?
+- **Performance**: Near-instant startup times and significantly reduced memory footprint compared to a standard JVM.
+- **Security**: Reduced attack surface by excluding unused code and disabling dynamic class loading at runtime.
+- **Portability**: No need to install Java Runtime Environment (JRE) on the target system.
+
+#### Performance Comparison (Typical)
+| Feature | Standard JVM | Native Image |
+|---------|--------------|--------------|
+| **Startup Time** | ~1-2 seconds | **<100 ms** |
+| **Memory Footprint** | ~120 MB+ | **~30-50 MB** |
+| **Executable Size** | Requires JRE | **Standalone (~30MB)** |
+
 ---  
 **Set Up Page**
  ![Book Cover](screenshots/1.jpg)
@@ -38,10 +55,6 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
 - Ubuntu 24.04 LTS
 - Root privileges
 
-### Native Image Build Requirements
-- **CPU**: 4 cores (For Native Image Build, 2 cores is enough for standard JAR)
-- **RAM**: 8GB (For Native Image Build, 4GB is enough for standard JAR)
-- **Swap**: 8GB (For Native Image Build)
 
 ## Quick Start
 
@@ -74,17 +87,7 @@ sudo apt update && sudo apt install maven -y
 mvn wrapper:wrapper
 ```
 
-### Why Native Image?
-- **Performance**: Near-instant startup times and significantly reduced memory footprint compared to a standard JVM.
-- **Security**: Reduced attack surface by excluding unused code and disabling dynamic class loading at runtime.
-- **Portability**: No need to install Java Runtime Environment (JRE) on the target system.
 
-#### Performance Comparison (Typical)
-| Feature | Standard JVM | Native Image |
-|---------|--------------|--------------|
-| **Startup Time** | ~1-2 seconds | **<100 ms** |
-| **Memory Footprint** | ~120 MB+ | **~30-50 MB** |
-| **Executable Size** | Requires JRE | **Standalone (~30MB)** |
 
 
 **Increase Swap Memory**
