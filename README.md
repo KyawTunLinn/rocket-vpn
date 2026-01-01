@@ -10,26 +10,26 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
 - **Secure**: Admin login required.
 
 ---  
+**Set Up Page**
  ![Book Cover](screenshots/1.jpg)
- **Set Up Page**
 ---
+**Login Page**
  ![Book Cover](screenshots/2.jpg)
- **Login Page**
 --- 
- ![Book Cover](screenshots/3.jpg)
  **Dashboard**
+ ![Book Cover](screenshots/3.jpg)
 ---
+**Scan QR**
  ![Book Cover](screenshots/4.jpg)
- **Scan QR**
 ---
- ![Book Cover](screenshots/5.jpg)
  **Settings**
+ ![Book Cover](screenshots/5.jpg)
 ---
- ![Book Cover](screenshots/6.jpg)
  **Rate Limiting**
+ ![Book Cover](screenshots/6.jpg)
 ---
- ![Book Cover](screenshots/7.jpg)
  **Reset Settings**
+ ![Book Cover](screenshots/7.jpg)
 ---
 
 ## Prerequisites
