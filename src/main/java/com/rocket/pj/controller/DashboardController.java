@@ -1,7 +1,7 @@
 package com.rocket.pj.controller;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
+// import com.google.zxing.client.j2se.MatrixToImageWriter; // Removed
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.rocket.pj.entity.Client;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.rocket.pj.dto.ExportData;
 import com.rocket.pj.entity.SystemConfig;
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@org.springframework.aot.hint.annotation.RegisterReflectionForBinding({ ExportData.class, Client.class,
+        SystemConfig.class })
 public class DashboardController {
 
     private final ClientRepository clientRepository;
@@ -82,16 +83,32 @@ public class DashboardController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/clients/qrcode/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/clients/qrcode/{id}", produces = "image/svg+xml") // Changed to SVG
     @ResponseBody
     public byte[] getQrCode(@PathVariable Long id) throws Exception {
         String config = wireGuardService.getClientConfig(id);
         QRCodeWriter barcodeWriter = new QRCodeWriter();
+        // Generate BitMatrix
         BitMatrix bitMatrix = barcodeWriter.encode(config, BarcodeFormat.QR_CODE, 200, 200);
 
-        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-        return pngOutputStream.toByteArray();
+        // Convert BitMatrix to SVG String manually (No AWT required)
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 ").append(width).append(" ").append(height)
+                .append("\" stroke=\"none\">");
+        sb.append("<rect width=\"100%\" height=\"100%\" fill=\"#FFFFFF\"/>");
+        sb.append("<path d=\"");
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (bitMatrix.get(x, y)) {
+                    sb.append("M").append(x).append(",").append(y).append("h1v1h-1z ");
+                }
+            }
+        }
+        sb.append("\" fill=\"#000000\"/></svg>");
+
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     @GetMapping(value = "/clients/config/{id}", produces = MediaType.TEXT_PLAIN_VALUE)

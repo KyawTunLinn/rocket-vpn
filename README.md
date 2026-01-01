@@ -1,4 +1,4 @@
-# Rocket VPN Server ( version 0.0.2 )
+# Rocket VPN Server ( version 0.0.3 )
  ![Book Cover](screenshots/logo.png)
  
 A Spring Boot application to manage a WireGuard VPN server with a modern web interface.
@@ -32,26 +32,93 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
  ![Book Cover](screenshots/7.jpg)
 ---
 
+
+
 ## Prerequisites
-- Debian 12 (Recommended) or Ubuntu 24.04 LTS
+- Ubuntu 24.04 LTS
 - Root privileges
+
+### Native Image Build Requirements
+- **CPU**: 4 cores (For Native Image Build, 2 cores is enough for standard JAR)
+- **RAM**: 8GB (For Native Image Build, 4GB is enough for standard JAR)
+- **Swap**: 8GB (For Native Image Build)
 
 ## Quick Start
 
 ### 1. Build the Application
+
+**Install SDK Manager**
 ```bash
-sudo apt update && sudo apt upgrade -y && sudo apt-get install -y wireguard wireguard-tools iproute2 qrencode iptables curl openjdk-21-jdk -y
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+
+**Install GraalVM 25**
+```bash
+sdk list java
+sdk install java 25.0.1-graal
+```
+***Install Packages***
+```bash
+sudo apt update && sudo apt upgrade -y && sudo apt-get install -y wireguard wireguard-tools iproute2 qrencode iptables curl -y
 
 Enabling IP Forwarding..."
  Uncomment net.ipv4.ip_forward=1 in /etc/sysctl.conf if not already enabled
 sudo sysctl -p
 
+```
+
+**Install Maven**
+```bash
+sudo apt update && sudo apt install maven -y
+mvn wrapper:wrapper
+```
+
+### Why Native Image?
+- **Performance**: Near-instant startup times and significantly reduced memory footprint compared to a standard JVM.
+- **Security**: Reduced attack surface by excluding unused code and disabling dynamic class loading at runtime.
+- **Portability**: No need to install Java Runtime Environment (JRE) on the target system.
+
+#### Performance Comparison (Typical)
+| Feature | Standard JVM | Native Image |
+|---------|--------------|--------------|
+| **Startup Time** | ~1-2 seconds | **<100 ms** |
+| **Memory Footprint** | ~120 MB+ | **~30-50 MB** |
+| **Executable Size** | Requires JRE | **Standalone (~30MB)** |
+
+
+**Increase Swap Memory**
+(Recommended for native image build to prevent OOM errors)
+```bash
+sudo swapoff /swapfile || true && sudo rm -f /swapfile && sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && sudo swapon --show && free -h
+```
+
+**Convert Native Image**
+```bash
+./mvnw -Pnative native:compile
+```
+
+**Run Native Image**
+```bash
+./pj
+```
+
+### Alternative: Build Standard JAR
+If you do not want to convert to a native image, you can generate a standard JAR file:
+```bash
 ./mvnw clean package -DskipTests
 ```
 
 ### 2. Run
+
+**For Native Image:**
 ```bash
-java -jar yourgenerated.jar
+./target/pj
+```
+
+**For Standard JAR:**
+```bash
+java -jar target/pj-0.0.1-SNAPSHOT.jar
 ```
 The application will start automatically on port 8080.
 

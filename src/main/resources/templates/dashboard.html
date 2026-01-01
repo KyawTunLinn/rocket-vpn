@@ -756,14 +756,14 @@
                             <td th:text="${#temporals.format(client.createdAt, 'yyyy-MM-dd')}" data-label="Created">
                                 2023-01-01</td>
                             <td data-label="Last Seen">
-                                <span th:with="hs=${handshakes.get(client.publicKey)}"
+                                <span th:with="hs=${handshakes[client.publicKey]}"
                                     th:text="${hs != null && hs > 0 ? ((now - hs) < 180 ? 'Online' : ((now - hs) / 60) + 'm ago') : 'Never'}"
                                     th:style="${hs != null && (now - hs) < 180 ? 'color: var(--success-color); font-weight: bold;' : ''}">
                                     Never
                                 </span>
                             </td>
-                            <td th:text="${transfer.get(client.publicKey) ?: '0 B / 0 B'}"
-                                data-label="Transfer (RX/TX)">0 B / 0 B</td>
+                            <td th:text="${transfer[client.publicKey] ?: '0 B / 0 B'}" data-label="Transfer (RX/TX)">0 B
+                                / 0 B</td>
                             <td data-label="Actions">
                                 <div class="client-actions" style="margin-top: 0; border-top: none; padding-top: 0;">
                                     <button class="action-btn btn-qr" th:onclick="'showQr(' + ${client.id} + ')'"
@@ -803,7 +803,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            &copy; 2025 Rocket VPN. All rights reserved. v0.0.2 <br> Developed by <a
+            &copy; 2025 Rocket VPN. All rights reserved. v0.0.3 <br> Developed by <a
                 href="https://github.com/KyawTunLinn" style="text-decoration: none; color: var(--primary-color);">Kyaw
                 Tun Linn</a>
         </footer>
