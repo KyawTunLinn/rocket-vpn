@@ -8,28 +8,30 @@ A Spring Boot application to manage a WireGuard VPN server with a modern web int
 - **QR Code Support**: Scan to connect mobile devices instantly.
 - **Monitoring**: View real-time connection status and data usage.
 - **Secure**: Admin login required.
-  
+
+---  
  ![Book Cover](screenshots/1.jpg)
  **Set Up Page**
- 
+---
  ![Book Cover](screenshots/2.jpg)
  **Login Page**
- 
+--- 
  ![Book Cover](screenshots/3.jpg)
  **Dashboard**
- 
+---
  ![Book Cover](screenshots/4.jpg)
  **Scan QR**
- 
+---
  ![Book Cover](screenshots/5.jpg)
  **Settings**
- 
+---
  ![Book Cover](screenshots/6.jpg)
  **Rate Limiting**
- 
+---
  ![Book Cover](screenshots/7.jpg)
  **Reset Settings**
- 
+---
+
 ## Prerequisites
 - Debian 12 (Recommended) or Ubuntu 24.04 LTS
 - Root privileges
