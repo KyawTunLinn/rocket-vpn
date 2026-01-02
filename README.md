@@ -143,3 +143,20 @@ Open your browser and navigate to:
 - **No Internet**: Ensure IP forwarding is enabled.
 - **Cannot Connect**: Check if UDP port `51820` is open in your firewall.
 
+
+## License
+
+This project is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
+
+You are free to use, modify, and distribute this software under the terms of the GPL-2.0 license. See the [LICENSE](LICENSE) file for full details.
+
+### Key Points:
+- **Freedom to Use**: You can use this software for any purpose.
+- **Freedom to Study**: You can study how the program works and modify it.
+- **Freedom to Share**: You can redistribute copies of the software.
+- **Freedom to Improve**: You can distribute modified versions, but they must also be under GPL-2.0.
+
+For more information, visit: [GNU GPL v2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+
+---
+*Developed by [Kyaw Tun Linn](https://github.com/KyawTunLinn)*
