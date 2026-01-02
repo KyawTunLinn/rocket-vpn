@@ -88,15 +88,6 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk list java
 sdk install java 25.0.1-graal
 ```
-***Install Packages***
-```bash
-sudo apt update && sudo apt upgrade -y && sudo apt-get install -y wireguard wireguard-tools iproute2 qrencode iptables curl -y
-
-Enabling IP Forwarding..."
- Uncomment net.ipv4.ip_forward=1 in /etc/sysctl.conf if not already enabled
-sudo sysctl -p
-
-```
 
 **Install Maven**
 ```bash
