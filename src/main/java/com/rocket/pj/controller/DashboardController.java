@@ -67,6 +67,10 @@ public class DashboardController {
 
     @PostMapping("/clients/add")
     public String addClient(@RequestParam String name) {
+        if (!name.matches("^[a-zA-Z0-9_-]+$")) {
+            throw new IllegalArgumentException(
+                    "Invalid client name. Only alphanumeric characters, hyphens, and underscores are allowed.");
+        }
         wireGuardService.addClient(name);
         return "redirect:/";
     }

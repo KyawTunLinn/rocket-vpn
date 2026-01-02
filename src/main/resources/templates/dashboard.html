@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- CSRF Token -->
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <style>
         :root {
             --primary-color: #0078D4;
@@ -803,7 +806,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            &copy; 2025 Rocket VPN. All rights reserved. v0.0.3 <br> Developed by <a
+            &copy; 2025 Rocket VPN. All rights reserved. v0.0.4 <br> Developed by <a
                 href="https://github.com/KyawTunLinn" style="text-decoration: none; color: var(--primary-color);">Kyaw
                 Tun Linn</a>
         </footer>
@@ -967,6 +970,13 @@
             const rowsPerPage = 10;
             let allRows = [];
             let filteredRows = [];
+
+            // CSRF Token
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            const csrfHeaders = {
+                [csrfHeader]: csrfToken
+            };
 
             document.addEventListener('DOMContentLoaded', function () {
                 const tableBody = document.getElementById('tableBody');
@@ -1173,6 +1183,7 @@
 
                 fetch('/admin/password', {
                     method: 'POST',
+                    headers: csrfHeaders,
                     body: formData
                 })
                     .then(async response => {
@@ -1233,6 +1244,7 @@
 
                 fetch('/admin/reset', {
                     method: 'POST',
+                    headers: csrfHeaders,
                     body: formData
                 })
                     .then(async response => {
@@ -1278,6 +1290,7 @@
 
                 fetch('/admin/restart', {
                     method: 'POST',
+                    headers: csrfHeaders,
                     body: formData
                 })
                     .then(async response => {
@@ -1368,6 +1381,7 @@
 
                     fetch('/clients/add', {
                         method: 'POST',
+                        headers: csrfHeaders,
                         body: formData
                     })
                         .then(response => {
@@ -1395,6 +1409,7 @@
 
                     fetch('/admin/import', {
                         method: 'POST',
+                        headers: csrfHeaders,
                         body: formData
                     })
                         .then(async response => {
@@ -1462,6 +1477,7 @@
 
                 fetch('/admin/export', {
                     method: 'POST',
+                    headers: csrfHeaders,
                     body: formData
                 })
                     .then(async response => {
@@ -1501,6 +1517,7 @@
 
                 fetch('/admin/import', {
                     method: 'POST',
+                    headers: csrfHeaders,
                     body: formData
                 })
                     .then(async response => {

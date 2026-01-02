@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 public class WgTool {
 
     public static String run(String command) {
+        return run(command, 5);
+    }
+
+    public static String run(String command, int timeoutSeconds) {
         try {
             ProcessBuilder builder = new ProcessBuilder();
             builder.command("bash", "-c", command);
             Process process = builder.start();
 
-            boolean finished = process.waitFor(5, TimeUnit.SECONDS);
+            boolean finished = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
             if (!finished) {
                 process.destroy();
                 throw new RuntimeException("Command timed out: " + command);

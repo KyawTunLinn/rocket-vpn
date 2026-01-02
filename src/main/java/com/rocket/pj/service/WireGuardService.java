@@ -24,6 +24,11 @@ public class WireGuardService {
     @Value("${wg.interface}")
     private String wgInterface;
 
+    // Cache fields
+    private String cachedDumpOutput;
+    private long lastDumpTime = 0;
+    private static final long CACHE_DURATION_MS = 3000; // 3 seconds
+
     private final ClientRepository clientRepository;
     private final SystemConfigRepository systemConfigRepository;
 
@@ -247,9 +252,25 @@ public class WireGuardService {
         }
     }
 
+    private synchronized String getCachedDumpOutput() {
+        long now = System.currentTimeMillis();
+        if (now - lastDumpTime > CACHE_DURATION_MS || cachedDumpOutput == null) {
+            try {
+                cachedDumpOutput = WgTool.run("wg show " + wgInterface + " dump");
+                lastDumpTime = now;
+            } catch (Exception e) {
+                cachedDumpOutput = "";
+            }
+        }
+        return cachedDumpOutput;
+    }
+
     public java.util.Map<String, Long> getHandshakeData() {
         try {
-            String output = WgTool.run("wg show " + wgInterface + " dump");
+            String output = getCachedDumpOutput();
+            if (output.isEmpty())
+                return java.util.Collections.emptyMap();
+
             return java.util.Arrays.stream(output.split("\n"))
                     .skip(1)
                     .map(line -> line.split("\t"))
@@ -264,7 +285,10 @@ public class WireGuardService {
 
     public java.util.Map<String, String> getDataTransfer() {
         try {
-            String output = WgTool.run("wg show " + wgInterface + " dump");
+            String output = getCachedDumpOutput();
+            if (output.isEmpty())
+                return java.util.Collections.emptyMap();
+
             return java.util.Arrays.stream(output.split("\n"))
                     .skip(1)
                     .map(line -> line.split("\t"))
@@ -282,16 +306,18 @@ public class WireGuardService {
         long totalRx = 0;
         long totalTx = 0;
         try {
-            String output = WgTool.run("wg show " + wgInterface + " dump");
-            for (String line : output.split("\n")) {
-                if (line.isEmpty())
-                    continue;
-                String[] parts = line.split("\t");
-                if (parts.length > 6) {
-                    // parts[5] = rx (download from client -> server rx)
-                    // parts[6] = tx (upload to client -> server tx)
-                    totalRx += Long.parseLong(parts[5]);
-                    totalTx += Long.parseLong(parts[6]);
+            String output = getCachedDumpOutput();
+            if (!output.isEmpty()) {
+                for (String line : output.split("\n")) {
+                    if (line.isEmpty())
+                        continue;
+                    String[] parts = line.split("\t");
+                    if (parts.length > 6) {
+                        // parts[5] = rx (download from client -> server rx)
+                        // parts[6] = tx (upload to client -> server tx)
+                        totalRx += Long.parseLong(parts[5]);
+                        totalTx += Long.parseLong(parts[6]);
+                    }
                 }
             }
         } catch (Exception e) {
