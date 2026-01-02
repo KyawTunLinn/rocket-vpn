@@ -1,7 +1,21 @@
-# Rocket VPN Server ( version 0.0.4 )
- ![Book Cover](screenshots/logo.png)
- 
-A Spring Boot application to manage a WireGuard VPN server with a modern web interface.
+<p align="center">
+  <img src="screenshots/logo.png" alt="Rocket VPN Logo" width="200"/>
+</p>
+
+<h1 align="center">Rocket VPN Server (v0.0.4)</h1>
+
+<p align="center">
+  <strong>A Spring Boot application to manage a WireGuard VPN server with a modern web interface.</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-0.0.4-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.3.0-green.svg" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/Java-25-orange.svg" alt="Java 25">
+  <img src="https://img.shields.io/badge/WireGuard-Fast-red.svg" alt="WireGuard">
+</p>
+
+<hr>
 
 ## Features
 - **Easy Client Management**: Create, disable, and delete VPN clients.

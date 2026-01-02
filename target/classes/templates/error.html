@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Error - Rocket Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F3F2F1;
+            --card-bg: #FFFFFF;
+            --primary-color: #0078D4;
+            --text-color: #201F1E;
+            --border-color: #E1DFDD;
+            --radius: 4px;
+            --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+            --danger-color: #D13438;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #202020;
+                --card-bg: #2B2B2B;
+                --primary-color: #479EF5;
+                --text-color: #FFFFFF;
+                --border-color: #484644;
+                --shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.4), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .error-container {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            color: var(--danger-color);
+            margin-top: 0;
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="error-container">
+        <h1 th:text="${status} ?: 'Error'">Error</h1>
+        <h2 th:if="${status == 429}">Too Many Attempts</h2>
+        <h2 th:if="${status == 404}">Page Not Found</h2>
+        <h2 th:if="${status == 500}">Internal Server Error</h2>
+
+        <p th:if="${status == 429}">
+            You have made too many failed login attempts.<br>
+            Please try again in 15 minutes.
+        </p>
+        <p th:if="${status == 404}">
+            The page you are looking for does not exist.
+        </p>
+        <p th:unless="${status == 429 or status == 404}">
+            Something went wrong. Please try again later.
+        </p>
+
+        <a href="/" class="btn"><i class="fas fa-home"></i> Go Home</a>
+
+        <div class="footer-note">
+            &copy; 2025 Rocket Admin v0.0.4<br>Developed by <a href="https://github.com/KyawTunLinn"
+                style="text-decoration: none; color: var(--primary-color);">Kyaw Tun Linn</a>
+        </div>
+    </div>
+</body>
+
+</html>
